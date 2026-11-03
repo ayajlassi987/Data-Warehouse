@@ -1,0 +1,8 @@
+metric,value
+article_rows_before_cleaning,3886
+article_rows_after_deduplication,3885
+rows_removed_as_duplicate_pmid,1
+unique_nonmissing_pmids_after_cleaning,3885
+duplicate_pmid_rows_flagged_before_cleaning,2
+rows_with_missing_abstract,11
+rows_with_missing_doi,397

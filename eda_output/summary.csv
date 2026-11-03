@@ -1,0 +1,16 @@
+﻿metric,value
+xml_files_found,4036.0
+articles_extracted,3886.0
+unique_non_null_pmids,3885.0
+duplicate_pmid_rows,1.0
+rows_without_pmid,0.0
+rows_without_title,0.0
+rows_without_abstract,11.0
+rows_without_journal,3.0
+rows_without_year,3.0
+rows_without_doi,397.0
+xml_files_with_errors_or_no_records,153.0
+year_min,2012.0
+year_max,2016.0
+mean_abstract_words,221.51
+median_abstract_words,229.0
