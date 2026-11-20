@@ -1,0 +1,10 @@
+﻿check_name,column_name,total_records,failed_records,quality_score,status,details
+pmid_completeness,pmid,3885,0,100.0,PASS,0 missing values
+title_completeness,title,3885,0,100.0,PASS,0 missing values
+doi_completeness,doi,3885,397,89.78,WARNING,397 missing values
+abstract_completeness,abstract,3885,11,99.72,WARNING,11 missing values
+journal_completeness,journal,3885,3,99.92,WARNING,3 missing values
+year_completeness,year,3885,3,99.92,WARNING,3 missing values
+pmid_uniqueness,pmid,3885,0,100.0,PASS,0 duplicate values
+doi_uniqueness,doi,3488,0,100.0,PASS,0 duplicate values
+year_validity,year,3882,0,100.0,PASS,0 invalid non-empty years

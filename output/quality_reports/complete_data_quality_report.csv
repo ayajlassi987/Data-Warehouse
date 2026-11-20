@@ -1,0 +1,55 @@
+﻿category,check_name,column_name,table_name,total_records,failed_records,quality_score,status,details
+DATA_QUALITY,pmid_completeness,pmid,,3885,0,100.0,PASS,0 missing values
+DATA_QUALITY,title_completeness,title,,3885,0,100.0,PASS,0 missing values
+DATA_QUALITY,doi_completeness,doi,,3885,397,89.78,WARNING,397 missing values
+DATA_QUALITY,abstract_completeness,abstract,,3885,11,99.72,WARNING,11 missing values
+DATA_QUALITY,journal_completeness,journal,,3885,3,99.92,WARNING,3 missing values
+DATA_QUALITY,year_completeness,year,,3885,3,99.92,WARNING,3 missing values
+DATA_QUALITY,pmid_uniqueness,pmid,,3885,0,100.0,PASS,0 duplicate values
+DATA_QUALITY,doi_uniqueness,doi,,3488,0,100.0,PASS,0 duplicate values
+DATA_QUALITY,year_validity,year,,3882,0,100.0,PASS,0 invalid non-empty years
+CONSISTENCY,authors_missing_pmid,,,28738,0,,PASS,0 rows without PMID
+CONSISTENCY,authors_orphan_pmid,,,28738,0,,PASS,0 unknown PMIDs
+CONSISTENCY,authors_duplicate_rows,,,28738,0,,PASS,0 rows involved in duplicate associations
+CONSISTENCY,authors_count_consistency,,,3885,0,,PASS,0 articles with inconsistent counts
+CONSISTENCY,keywords_missing_pmid,,,12366,0,,PASS,0 rows without PMID
+CONSISTENCY,keywords_orphan_pmid,,,12366,0,,PASS,0 unknown PMIDs
+CONSISTENCY,keywords_duplicate_rows,,,12366,0,,PASS,0 rows involved in duplicate associations
+CONSISTENCY,keywords_count_consistency,,,3885,1,,FAIL,1 articles with inconsistent counts
+CONSISTENCY,mesh_terms_missing_pmid,,,35778,0,,PASS,0 rows without PMID
+CONSISTENCY,mesh_terms_orphan_pmid,,,35778,0,,PASS,0 unknown PMIDs
+CONSISTENCY,mesh_terms_duplicate_rows,,,35778,0,,PASS,0 rows involved in duplicate associations
+CONSISTENCY,mesh_terms_count_consistency,,,3885,0,,PASS,0 articles with inconsistent counts
+CONSISTENCY,publication_types_missing_pmid,,,7742,0,,PASS,0 rows without PMID
+CONSISTENCY,publication_types_orphan_pmid,,,7742,0,,PASS,0 unknown PMIDs
+CONSISTENCY,publication_types_duplicate_rows,,,7742,0,,PASS,0 rows involved in duplicate associations
+INTEGRITY,fact_article_pmid_uniqueness,,fact_article,3885,0,,PASS,0 problematic records
+INTEGRITY,fact_article_pmid_null,,fact_article,3885,0,,PASS,0 problematic records
+INTEGRITY,fact_article_year_orphan,,fact_article,3885,0,,PASS,0 problematic records
+INTEGRITY,fact_article_journal_orphan,,fact_article,3885,0,,PASS,0 problematic records
+INTEGRITY,fact_article_missing_year,,fact_article,3885,3,,WARNING,3 articles without year_id
+INTEGRITY,fact_article_missing_journal,,fact_article,3885,3,,WARNING,3 articles without journal_id
+INTEGRITY,dim_year_year_id_null,,dim_year,5,0,,PASS,0 problematic records
+INTEGRITY,dim_year_year_id_uniqueness,,dim_year,5,0,,PASS,0 problematic records
+INTEGRITY,dim_journal_journal_id_null,,dim_journal,1063,0,,PASS,0 problematic records
+INTEGRITY,dim_journal_journal_id_uniqueness,,dim_journal,1063,0,,PASS,0 problematic records
+INTEGRITY,dim_author_author_id_null,,dim_author,22965,0,,PASS,0 problematic records
+INTEGRITY,dim_author_author_id_uniqueness,,dim_author,22965,0,,PASS,0 problematic records
+INTEGRITY,dim_keyword_keyword_id_null,,dim_keyword,7174,0,,PASS,0 problematic records
+INTEGRITY,dim_keyword_keyword_id_uniqueness,,dim_keyword,7174,0,,PASS,0 problematic records
+INTEGRITY,dim_mesh_term_mesh_term_id_null,,dim_mesh_term,8980,0,,PASS,0 problematic records
+INTEGRITY,dim_mesh_term_mesh_term_id_uniqueness,,dim_mesh_term,8980,0,,PASS,0 problematic records
+INTEGRITY,dim_publication_type_publication_type_id_null,,dim_publication_type,37,0,,PASS,0 problematic records
+INTEGRITY,dim_publication_type_publication_type_id_uniqueness,,dim_publication_type,37,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_author_article_orphan,,bridge_article_author,28735,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_author_dimension_orphan,,bridge_article_author,28735,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_author_association_uniqueness,,bridge_article_author,28735,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_keyword_article_orphan,,bridge_article_keyword,12366,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_keyword_dimension_orphan,,bridge_article_keyword,12366,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_keyword_association_uniqueness,,bridge_article_keyword,12366,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_mesh_article_orphan,,bridge_article_mesh,35778,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_mesh_dimension_orphan,,bridge_article_mesh,35778,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_mesh_association_uniqueness,,bridge_article_mesh,35778,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_publication_type_article_orphan,,bridge_article_publication_type,7742,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_publication_type_dimension_orphan,,bridge_article_publication_type,7742,0,,PASS,0 problematic records
+INTEGRITY,bridge_article_publication_type_association_uniqueness,,bridge_article_publication_type,7742,0,,PASS,0 problematic records

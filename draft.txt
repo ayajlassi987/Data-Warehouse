@@ -1,0 +1,155 @@
+# Data-Warehouse
+
+
+docker compose up -d
+docker exec -it pubmed_dw_db psql -U pubmed_user -d pubmed_dw
+    \dt dw.*
+    SELECT COUNT(*) FROM dw.fact_article;
+
+    Afficher le nombre d'enregistrements dans les principales dimensions :
+    SELECT 'dim_year' AS table_name, COUNT(*) FROM dw.dim_year
+UNION ALL
+SELECT 'dim_journal', COUNT(*) FROM dw.dim_journal
+UNION ALL
+SELECT 'dim_author', COUNT(*) FROM dw.dim_author
+UNION ALL
+SELECT 'dim_keyword', COUNT(*) FROM dw.dim_keyword
+UNION ALL
+SELECT 'dim_mesh_term', COUNT(*) FROM dw.dim_mesh_term
+UNION ALL
+SELECT 'dim_publication_type', COUNT(*) FROM dw.dim_publication_type;
+
+
+docker compose stop
+
+
+
+==> # Aller dans le projet
+cd C:\Users\Aya\Documents\Data_arch
+
+# Démarrer le projet
+docker compose up -d
+
+# Vérifier les conteneurs
+docker compose ps
+
+# Accéder à PostgreSQL
+docker exec -it pubmed_dw_db psql -U pubmed_user -d pubmed_dw
+
+# Arrêter le projet à la fin de la journée
+docker compose stop
+
+
+## 6. Modélisation dimensionnelle et visualisation avec Power BI
+
+### 6.1. Architecture du Data Warehouse
+
+Le Data Warehouse PubMed est organisé selon un modèle dimensionnel en étoile étendu (*Star Schema with Bridge Tables*).
+
+La table centrale `fact_article` contient les informations principales relatives aux publications scientifiques. Elle est directement reliée aux dimensions `dim_year` et `dim_journal`.
+
+Les relations plusieurs-à-plusieurs entre les articles et les auteurs, mots-clés, termes MeSH et types de publication sont gérées à travers quatre tables de liaison (*Bridge Tables*).
+
+**Structure du modèle :**
+
+- **Table de faits :**
+  - `fact_article`
+
+- **Tables de dimensions :**
+  - `dim_year`
+  - `dim_journal`
+  - `dim_author`
+  - `dim_keyword`
+  - `dim_mesh_term`
+  - `dim_publication_type`
+
+- **Tables de liaison :**
+  - `bridge_article_author`
+  - `bridge_article_keyword`
+  - `bridge_article_mesh`
+  - `bridge_article_publication_type`
+
+### 6.2. Connexion de Power BI à PostgreSQL
+
+La visualisation du modèle dimensionnel a été réalisée avec Power BI Desktop, en utilisant la base PostgreSQL créée précédemment.
+
+**Étapes de connexion :**
+
+1. Ouvrir Power BI Desktop.
+2. Accéder à **Home → Get Data → PostgreSQL Database**.
+3. Renseigner les paramètres de connexion :
+
+| Paramètre | Valeur |
+|---|---|
+| Server | `localhost:5433` |
+| Database | `pubmed_dw` |
+| Schema | `dw` |
+| Authentication | Database |
+| Username | `pubmed_user` |
+| Password | PostgreSQL password |
+
+4. Sélectionner le mode de connexion **Import**.
+5. Sélectionner les 11 tables du schéma `dw`.
+6. Cliquer sur **Load** pour importer les données.
+
+### 6.3. Construction du modèle en étoile
+
+Après l'importation des tables :
+
+1. Accéder à la **Model View** de Power BI.
+2. Afficher les 11 tables importées.
+3. Identifier `fact_article` comme table centrale.
+4. Organiser les tables de dimensions autour de la table centrale.
+5. Positionner les tables de liaison entre la table de faits et les dimensions concernées.
+6. Créer ou vérifier les relations entre les tables à partir de leurs clés primaires et étrangères.
+
+### 6.4. Configuration des relations
+
+Les relations suivantes constituent la structure du modèle :
+
+| Table source | Champ | Table cible | Champ |
+|---|---|---|---|
+| `fact_article` | `journal_id` | `dim_journal` | `journal_id` |
+| `fact_article` | `year_id` | `dim_year` | `year_id` |
+| `bridge_article_author` | `pmid` | `fact_article` | `pmid` |
+| `bridge_article_author` | `author_id` | `dim_author` | `author_id` |
+| `bridge_article_keyword` | `pmid` | `fact_article` | `pmid` |
+| `bridge_article_keyword` | `keyword_id` | `dim_keyword` | `keyword_id` |
+| `bridge_article_mesh` | `pmid` | `fact_article` | `pmid` |
+| `bridge_article_mesh` | `mesh_term_id` | `dim_mesh_term` | `mesh_term_id` |
+| `bridge_article_publication_type` | `pmid` | `fact_article` | `pmid` |
+| `bridge_article_publication_type` | `publication_type_id` | `dim_publication_type` | `publication_type_id` |
+
+**Paramètres des relations :**
+
+- Cardinalité : One-to-Many (1:*)
+- Direction du filtrage : Single
+- État : Active
+
+Le côté « One » correspond à la table contenant les identifiants uniques, tandis que le côté « Many » correspond à la table contenant les références à ces identifiants.
+
+### 6.5. Vérification et visualisation du modèle
+
+Une fois les relations configurées :
+
+1. Vérifier les cardinalités de toutes les relations.
+2. Vérifier que les relations sont actives.
+3. Vérifier les clés utilisées pour relier les tables.
+4. Organiser les tables dans la Model View pour faciliter la lecture du diagramme.
+5. Enregistrer le projet Power BI au format `.pbix`.
+
+Le diagramme obtenu permet de visualiser la structure dimensionnelle du Data Warehouse, les relations entre la table de faits, les dimensions et les tables de liaison.
+
+### 6.6. Résultat obtenu
+
+Le modèle final comprend :
+
+| Élément | Nombre |
+|---|---:|
+| Table de faits | 1 |
+| Dimensions | 6 |
+| Tables de liaison | 4 |
+| Total des tables | 11 |
+| Articles chargés | 3 885 |
+
+Cette modélisation facilite l'exploration des publications scientifiques et prépare les données pour la création de rapports analytiques et de tableaux de bord interactifs avec Power BI.

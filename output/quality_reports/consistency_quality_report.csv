@@ -1,0 +1,16 @@
+﻿check_name,total_records,failed_records,status,details
+authors_missing_pmid,28738,0,PASS,0 rows without PMID
+authors_orphan_pmid,28738,0,PASS,0 unknown PMIDs
+authors_duplicate_rows,28738,0,PASS,0 rows involved in duplicate associations
+authors_count_consistency,3885,0,PASS,0 articles with inconsistent counts
+keywords_missing_pmid,12366,0,PASS,0 rows without PMID
+keywords_orphan_pmid,12366,0,PASS,0 unknown PMIDs
+keywords_duplicate_rows,12366,0,PASS,0 rows involved in duplicate associations
+keywords_count_consistency,3885,1,FAIL,1 articles with inconsistent counts
+mesh_terms_missing_pmid,35778,0,PASS,0 rows without PMID
+mesh_terms_orphan_pmid,35778,0,PASS,0 unknown PMIDs
+mesh_terms_duplicate_rows,35778,0,PASS,0 rows involved in duplicate associations
+mesh_terms_count_consistency,3885,0,PASS,0 articles with inconsistent counts
+publication_types_missing_pmid,7742,0,PASS,0 rows without PMID
+publication_types_orphan_pmid,7742,0,PASS,0 unknown PMIDs
+publication_types_duplicate_rows,7742,0,PASS,0 rows involved in duplicate associations

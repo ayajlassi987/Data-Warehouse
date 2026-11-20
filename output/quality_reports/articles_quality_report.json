@@ -1,0 +1,92 @@
+{
+    "dataset": "articles_clean.csv",
+    "total_records": 3885,
+    "total_checks": 9,
+    "passed_checks": 5,
+    "warning_checks": 4,
+    "failed_checks": 0,
+    "error_checks": 0,
+    "results": [
+        {
+            "check_name": "pmid_completeness",
+            "column_name": "pmid",
+            "total_records": 3885,
+            "failed_records": 0,
+            "quality_score": 100.0,
+            "status": "PASS",
+            "details": "0 missing values"
+        },
+        {
+            "check_name": "title_completeness",
+            "column_name": "title",
+            "total_records": 3885,
+            "failed_records": 0,
+            "quality_score": 100.0,
+            "status": "PASS",
+            "details": "0 missing values"
+        },
+        {
+            "check_name": "doi_completeness",
+            "column_name": "doi",
+            "total_records": 3885,
+            "failed_records": 397,
+            "quality_score": 89.78,
+            "status": "WARNING",
+            "details": "397 missing values"
+        },
+        {
+            "check_name": "abstract_completeness",
+            "column_name": "abstract",
+            "total_records": 3885,
+            "failed_records": 11,
+            "quality_score": 99.72,
+            "status": "WARNING",
+            "details": "11 missing values"
+        },
+        {
+            "check_name": "journal_completeness",
+            "column_name": "journal",
+            "total_records": 3885,
+            "failed_records": 3,
+            "quality_score": 99.92,
+            "status": "WARNING",
+            "details": "3 missing values"
+        },
+        {
+            "check_name": "year_completeness",
+            "column_name": "year",
+            "total_records": 3885,
+            "failed_records": 3,
+            "quality_score": 99.92,
+            "status": "WARNING",
+            "details": "3 missing values"
+        },
+        {
+            "check_name": "pmid_uniqueness",
+            "column_name": "pmid",
+            "total_records": 3885,
+            "failed_records": 0,
+            "quality_score": 100.0,
+            "status": "PASS",
+            "details": "0 duplicate values"
+        },
+        {
+            "check_name": "doi_uniqueness",
+            "column_name": "doi",
+            "total_records": 3488,
+            "failed_records": 0,
+            "quality_score": 100.0,
+            "status": "PASS",
+            "details": "0 duplicate values"
+        },
+        {
+            "check_name": "year_validity",
+            "column_name": "year",
+            "total_records": 3882,
+            "failed_records": 0,
+            "quality_score": 100.0,
+            "status": "PASS",
+            "details": "0 invalid non-empty years"
+        }
+    ]
+}

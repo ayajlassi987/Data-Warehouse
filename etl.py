@@ -5,6 +5,11 @@ import pandas as pd
 import psycopg2
 from dotenv import load_dotenv
 from psycopg2.extras import execute_values
+from monitoring.run_tracker import (
+    create_run,
+    finish_run,
+    log_error,
+)
 
 
 # ============================================================
@@ -565,6 +570,7 @@ def load_publication_types(
 # 10. MAIN ETL PIPELINE
 # ============================================================
 
+
 def main():
     print("\n" + "=" * 60)
     print("PUBMED DATA WAREHOUSE - ETL PIPELINE")
@@ -575,55 +581,77 @@ def main():
             "POSTGRES_PASSWORD is missing from your .env file."
         )
 
-    # Load and validate input files before connecting to PostgreSQL.
-    data = load_csv_files()
+    source_name = ", ".join(
+        Path(path).name for path in CSV_FILES.values()
+    )
 
-    # Check whether relationship files contain PMIDs absent
-    # from the article dataset.
-    article_pmids = set(
-        data["articles"]["pmid"]
-    ) - {""}
+    # Start an independent monitoring session.
+    monitor_connection, run_id = create_run(
+        DB_CONFIG,
+        pipeline_name="PubMed Data Warehouse ETL",
+        source_name=source_name,
+    )
 
-    for dataset_name in (
-        "authors",
-        "keywords",
-        "mesh_terms",
-        "publication_types",
-    ):
-        relationship_pmids = set(
-            data[dataset_name]["pmid"]
-        ) - {""}
+    etl_connection = None
 
-        orphan_pmids = relationship_pmids - article_pmids
-
-        print(
-            f"{dataset_name}: "
-            f"{len(orphan_pmids):,} distinct PMIDs "
-            "not found in the article CSV"
-        )
-
-    schema_path = BASE_DIR / "schema.sql"
-
-    if not schema_path.exists():
-        raise FileNotFoundError(
-            f"Schema file not found: {schema_path}"
-        )
-
-    print("\nConnecting to PostgreSQL...")
-
-    connection = psycopg2.connect(**DB_CONFIG)
+    extracted_count = 0
+    loaded_count = 0
+    rejected_count = 0
 
     try:
-        with connection:
-            with connection.cursor() as cursor:
+        print(f"\nMonitoring run ID: {run_id}")
 
-                # Create tables if they do not already exist.
+        # 1. Load and validate CSV files.
+        data = load_csv_files()
+
+        # Article-level metrics.
+        extracted_count = len(data["articles"])
+
+        # 2. Check orphan PMIDs in relationship files.
+        article_pmids = set(
+            data["articles"]["pmid"]
+        ) - {""}
+
+        for dataset_name in (
+            "authors",
+            "keywords",
+            "mesh_terms",
+            "publication_types",
+        ):
+            relationship_pmids = set(
+                data[dataset_name]["pmid"]
+            ) - {""}
+
+            orphan_pmids = relationship_pmids - article_pmids
+
+            print(
+                f"{dataset_name}: "
+                f"{len(orphan_pmids):,} distinct PMIDs "
+                "not found in the article CSV"
+            )
+
+        # 3. Check SQL schema file.
+        schema_path = BASE_DIR / "schema.sql"
+
+        if not schema_path.exists():
+            raise FileNotFoundError(
+                f"Schema file not found: {schema_path}"
+            )
+
+        # 4. Connect to the Data Warehouse.
+        print("\nConnecting to PostgreSQL...")
+
+        etl_connection = psycopg2.connect(**DB_CONFIG)
+
+        with etl_connection:
+            with etl_connection.cursor() as cursor:
+
+                # Create DW tables if they do not exist.
                 cursor.execute(
                     schema_path.read_text(encoding="utf-8")
                 )
 
-                # Full refresh: clear previous DW contents in
-                # dependency-safe order. This is destructive.
+                # Full refresh of the Data Warehouse.
                 cursor.execute(
                     """
                     TRUNCATE TABLE
@@ -642,11 +670,13 @@ def main():
                     """
                 )
 
+                # 5. Load articles.
                 valid_pmids = load_articles(
                     cursor,
                     data["articles"],
                 )
 
+                # 6. Load relationship datasets.
                 load_authors(
                     cursor,
                     data["authors"],
@@ -671,7 +701,19 @@ def main():
                     valid_pmids,
                 )
 
-                # Report final table sizes.
+                # 7. Get final article count.
+                cursor.execute(
+                    "SELECT COUNT(*) FROM dw.fact_article;"
+                )
+
+                loaded_count = cursor.fetchone()[0]
+
+                rejected_count = max(
+                    extracted_count - loaded_count,
+                    0,
+                )
+
+                # 8. Display final table counts.
                 tables = [
                     "fact_article",
                     "dim_journal",
@@ -695,18 +737,58 @@ def main():
                     )
 
                     count = cursor.fetchone()[0]
-
                     print(f"{table:<40} {count:>10,}")
+
+        # 9. Mark the ETL execution as successful.
+        finish_run(
+            monitor_connection,
+            run_id,
+            status="SUCCESS",
+            extracted_records=extracted_count,
+            loaded_records=loaded_count,
+            rejected_records=rejected_count,
+        )
 
         print("\nETL completed successfully.")
 
-    except Exception:
-        # Roll back database changes if the ETL fails.
-        connection.rollback()
+    except Exception as error:
+
+        # Roll back DW changes if the ETL failed.
+        if etl_connection is not None:
+            etl_connection.rollback()
+
+        # Save the error and failed execution independently.
+        try:
+            log_error(
+                monitor_connection,
+                run_id,
+                error,
+            )
+
+            finish_run(
+                monitor_connection,
+                run_id,
+                status="FAILED",
+                extracted_records=extracted_count,
+                loaded_records=loaded_count,
+                rejected_records=rejected_count,
+                error_message=str(error),
+            )
+
+        except Exception as monitoring_error:
+            print(
+                "Monitoring update failed: "
+                f"{monitoring_error}"
+            )
+
+        print(f"\nETL failed: {error}")
         raise
 
     finally:
-        connection.close()
+        if etl_connection is not None:
+            etl_connection.close()
+
+        monitor_connection.close()
 
 
 if __name__ == "__main__":

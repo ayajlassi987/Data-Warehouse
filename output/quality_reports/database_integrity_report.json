@@ -1,0 +1,250 @@
+{
+    "database": "pubmed_dw",
+    "schema": "dw",
+    "total_checks": 30,
+    "passed_checks": 28,
+    "warning_checks": 2,
+    "failed_checks": 0,
+    "results": [
+        {
+            "check_name": "fact_article_pmid_uniqueness",
+            "table_name": "fact_article",
+            "total_records": 3885,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "fact_article_pmid_null",
+            "table_name": "fact_article",
+            "total_records": 3885,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "fact_article_year_orphan",
+            "table_name": "fact_article",
+            "total_records": 3885,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "fact_article_journal_orphan",
+            "table_name": "fact_article",
+            "total_records": 3885,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "fact_article_missing_year",
+            "table_name": "fact_article",
+            "total_records": 3885,
+            "failed_records": 3,
+            "status": "WARNING",
+            "details": "3 articles without year_id"
+        },
+        {
+            "check_name": "fact_article_missing_journal",
+            "table_name": "fact_article",
+            "total_records": 3885,
+            "failed_records": 3,
+            "status": "WARNING",
+            "details": "3 articles without journal_id"
+        },
+        {
+            "check_name": "dim_year_year_id_null",
+            "table_name": "dim_year",
+            "total_records": 5,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_year_year_id_uniqueness",
+            "table_name": "dim_year",
+            "total_records": 5,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_journal_journal_id_null",
+            "table_name": "dim_journal",
+            "total_records": 1063,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_journal_journal_id_uniqueness",
+            "table_name": "dim_journal",
+            "total_records": 1063,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_author_author_id_null",
+            "table_name": "dim_author",
+            "total_records": 22965,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_author_author_id_uniqueness",
+            "table_name": "dim_author",
+            "total_records": 22965,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_keyword_keyword_id_null",
+            "table_name": "dim_keyword",
+            "total_records": 7174,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_keyword_keyword_id_uniqueness",
+            "table_name": "dim_keyword",
+            "total_records": 7174,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_mesh_term_mesh_term_id_null",
+            "table_name": "dim_mesh_term",
+            "total_records": 8980,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_mesh_term_mesh_term_id_uniqueness",
+            "table_name": "dim_mesh_term",
+            "total_records": 8980,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_publication_type_publication_type_id_null",
+            "table_name": "dim_publication_type",
+            "total_records": 37,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "dim_publication_type_publication_type_id_uniqueness",
+            "table_name": "dim_publication_type",
+            "total_records": 37,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_author_article_orphan",
+            "table_name": "bridge_article_author",
+            "total_records": 28735,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_author_dimension_orphan",
+            "table_name": "bridge_article_author",
+            "total_records": 28735,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_author_association_uniqueness",
+            "table_name": "bridge_article_author",
+            "total_records": 28735,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_keyword_article_orphan",
+            "table_name": "bridge_article_keyword",
+            "total_records": 12366,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_keyword_dimension_orphan",
+            "table_name": "bridge_article_keyword",
+            "total_records": 12366,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_keyword_association_uniqueness",
+            "table_name": "bridge_article_keyword",
+            "total_records": 12366,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_mesh_article_orphan",
+            "table_name": "bridge_article_mesh",
+            "total_records": 35778,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_mesh_dimension_orphan",
+            "table_name": "bridge_article_mesh",
+            "total_records": 35778,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_mesh_association_uniqueness",
+            "table_name": "bridge_article_mesh",
+            "total_records": 35778,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_publication_type_article_orphan",
+            "table_name": "bridge_article_publication_type",
+            "total_records": 7742,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_publication_type_dimension_orphan",
+            "table_name": "bridge_article_publication_type",
+            "total_records": 7742,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        },
+        {
+            "check_name": "bridge_article_publication_type_association_uniqueness",
+            "table_name": "bridge_article_publication_type",
+            "total_records": 7742,
+            "failed_records": 0,
+            "status": "PASS",
+            "details": "0 problematic records"
+        }
+    ]
+}
